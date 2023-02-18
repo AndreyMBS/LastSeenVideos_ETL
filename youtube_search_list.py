@@ -8,29 +8,25 @@ import googleapiclient.discovery
 
 def main():   
 
-    api_service_name    = "youtube"
-    api_version         = "v3"
-
     dotenv_path = find_dotenv()
     load_dotenv(dotenv_path)
 
-    location_coordinates = os.getenv("LOCATION_COORDINATES")
-    developer_key = os.getenv("DEVELOPER_KEY")
-
-    api_service_name = "youtube"
-    api_version = "v3"
+    api_service_name        =   os.getenv("API_SERVICE_NAME")
+    api_version             =   os.getenv("API_VERSION")
+    location_coordinates    =   os.getenv("LOCATION_COORDINATES")
+    developer_key           =   os.getenv("DEVELOPER_KEY")
 
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, developerKey = developer_key)
 
     request = youtube.search().list(
-        part = "snippet",
-        location=location_coordinates,
-        locationRadius="200mi",
-        maxResults=20,
-        q="",
-        order="date",
-        type="video"
+        part            =   os.getenv("PART"),
+        location        =   os.getenv("LOCATION"),
+        locationRadius  =   os.getenv("LOCATIONRADIUS"),
+        maxResults      =   os.getenv("MAXRESULTS"),
+        q               =   os.getenv("Q"),
+        order           =   os.getenv("ORDER"),
+        type            =   os.getenv("TYPE")
     )
     
     response = request.execute()
