@@ -1,14 +1,25 @@
+import os
 import json
-import youtube_search_list
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
+
 from pipeline import Pipeline
+from dotenv import load_dotenv, find_dotenv
+import youtube_search_list
+
 
 if __name__ == '__main__':
 
+    dotenv_path = find_dotenv()
+    load_dotenv(dotenv_path)
+
+    ACCEPT      = os.getenv("ACCEPT")
+    CONTENTTYPE = os.getenv("CONTENTTYPE")
+
     headers = {
-        "Accept": "application/json",
-        "Content-Type" : "application/json",
+        "Accept"        : ACCEPT,
+        "Content-Type"  : CONTENTTYPE,
     }
 
     data_processed = Pipeline()

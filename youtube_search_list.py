@@ -8,29 +8,43 @@ import googleapiclient.discovery
 
 def main():   
 
+    # Load environment variables/path automatically.
     dotenv_path = find_dotenv()
     load_dotenv(dotenv_path)
 
-    api_service_name        =   os.getenv("API_SERVICE_NAME")
-    api_version             =   os.getenv("API_VERSION")
-    location_coordinates    =   os.getenv("LOCATION_COORDINATES")
-    developer_key           =   os.getenv("DEVELOPER_KEY")
+    # Constants
+    API_SERVICE_NAME        =   os.getenv("API_SERVICE_NAME")
+    API_VERSION             =   os.getenv("API_VERSION")
+    DEVELOPER_KEY           =   os.getenv("DEVELOPER_KEY")
+    PART                    =   os.getenv("PART"),
+    LOCATION                =   os.getenv("LOCATION"),
+    LOCATIONRADIUS          =   os.getenv("LOCATIONRADIUS"),
+    MAXRESULTS              =   os.getenv("MAXRESULTS"),
+    Q                       =   os.getenv("Q"),
+    ORDER                   =   os.getenv("ORDER"),
+    TYPE                    =   os.getenv("TYPE")
 
+    # Start building the YouTube API client.
     youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, developerKey = developer_key)
+        API_SERVICE_NAME, API_VERSION, developerKey = DEVELOPER_KEY)
 
+    # Search for videos to be received in the request.
     request = youtube.search().list(
-        part            =   os.getenv("PART"),
-        location        =   os.getenv("LOCATION"),
-        locationRadius  =   os.getenv("LOCATIONRADIUS"),
-        maxResults      =   os.getenv("MAXRESULTS"),
-        q               =   os.getenv("Q"),
-        order           =   os.getenv("ORDER"),
-        type            =   os.getenv("TYPE")
+        part            =   PART,
+        location        =   LOCATION,
+        locationRadius  =   LOCATIONRADIUS,
+        maxResults      =   MAXRESULTS,
+        q               =   Q,
+        order           =   ORDER,
+        type            =   TYPE
     )
     
-    response = request.execute()
-    return response
+    # Execute the request and then return a response.
+    try:
+        response = request.execute()
+        return response
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()
