@@ -16,12 +16,12 @@ def main():
     API_SERVICE_NAME        =   os.getenv("API_SERVICE_NAME")
     API_VERSION             =   os.getenv("API_VERSION")
     DEVELOPER_KEY           =   os.getenv("DEVELOPER_KEY")
-    PART                    =   os.getenv("PART"),
-    LOCATION                =   os.getenv("LOCATION"),
-    LOCATIONRADIUS          =   os.getenv("LOCATIONRADIUS"),
-    MAXRESULTS              =   os.getenv("MAXRESULTS"),
-    Q                       =   os.getenv("Q"),
-    ORDER                   =   os.getenv("ORDER"),
+    PART                    =   os.getenv("PART")
+    LOCATION                =   os.getenv("LOCATION")
+    LOCATIONRADIUS          =   os.getenv("LOCATIONRADIUS")
+    MAXRESULTS              =   os.getenv("MAXRESULTS")
+    Q                       =   os.getenv("Q")
+    ORDER                   =   os.getenv("ORDER")
     TYPE                    =   os.getenv("TYPE")
 
     # Start building the YouTube API client.
