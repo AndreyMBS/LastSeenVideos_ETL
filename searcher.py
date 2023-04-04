@@ -1,16 +1,15 @@
 import os
 import json
 from datetime import datetime
+import datetime
 
 import pandas as pd
 
 from pipeline import Pipeline
 from dotenv import load_dotenv, find_dotenv
-import youtube_search_list
+from youtube_api import YoutubeAPI
 
-
-if __name__ == '__main__':
-
+def main():
     dotenv_path = find_dotenv()
     load_dotenv(dotenv_path)
 
@@ -24,14 +23,11 @@ if __name__ == '__main__':
     }
 
     # Retrieve data from Youtube API transforming the first response into JSON.
-    data = json.dumps(youtube_search_list.main())
+    data = json.dumps(YoutubeAPI.connection_to_api())
     resp = json.loads(data)
 
-    # Initialize Pipeline object.
-    data_processed = Pipeline()
-
     # Validate the response.
-    data_processed.dataResponseValidation(resp)
+    Pipeline.dataResponseValidation(resp)
 
     etag            = []
     publishTime     = []
@@ -52,14 +48,17 @@ if __name__ == '__main__':
         "publishTime"       :   publishTime,
         "title"             :   title,
         "description"       :   description,
-        "registeredInTable" :   datetime.now()
+        "registeredInTable" :   datetime.datetime.now()
     }
 
     # Create pandas dataframe from video data
     video_df = pd.DataFrame(dict_videos, columns = ["etag", "publishTime", "title", "description", "registeredInTable"])
 
     # Perform data transformation
-    data_processed.dataTransformation(video_df)
+    Pipeline.dataTransformation(video_df)
 
      # Insert data into database
-    data_processed.dataInsert(video_df)
+    Pipeline.dataInsert(video_df)
+
+if __name__ == "__main__":
+    main()
