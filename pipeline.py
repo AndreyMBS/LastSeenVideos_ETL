@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import re
 
 import sqlalchemy
 from sqlalchemy.engine import create_engine, URL
@@ -22,22 +23,26 @@ class Pipeline:
             return "The entire JSON file is empty."
 
     @staticmethod
-    def dataTransformation(df: pd.DataFrame):
+    def dataTransformation(df: pd.DataFrame) -> pd.DataFrame:
         """
         Transform the data in the DataFrame.
 
         :param df: A pandas dataframe with the organized data of the response.
         """
-        df['publishTime']   =   pd.to_datetime(df['publishTime'], format='%Y-%m-%d')
+        df['publishTime']   =   pd.to_datetime(df['publishTime'], format='%Y-%m-%d %H:%M:%S')
         df['publishTime']   =   df['publishTime'].dt.tz_convert(None)
 
         df['title']         =   df['title'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
-        df['title']         =   df["title"].str.replace(r'[^A-Za-z ]', '')
+        df['title']         =   df["title"].str.replace(r'[^A-Za-z ]', '').replace(r'\s+', ' ', regex=True)
         df['title']         =   df['title'].str.strip()
+        df['title']         =   df['title'].map(str.lower)
 
         df['description']   =   df['description'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
-        df['description']   =   df["description"].str.replace(r'[^A-Za-z ]', '')
+        df['description']   =   df["description"].str.replace(r'[^A-Za-z ]', '').replace(r'\s+', ' ', regex=True)
         df['description']   =   df['description'].str.strip()
+        df['description']   =   df['description'].map(str.lower)
+        
+        return df
 
     @staticmethod
     def dataInsert(df: pd.DataFrame):

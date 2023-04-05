@@ -55,7 +55,7 @@ def main():
     video_df = pd.DataFrame(dict_videos, columns = ["etag", "publishTime", "title", "description", "registeredInTable"])
 
     # Perform data transformation
-    Pipeline.dataTransformation(video_df)
+    video_df = Pipeline.dataTransformation(video_df)
 
      # Insert data into database
     Pipeline.dataInsert(video_df)
